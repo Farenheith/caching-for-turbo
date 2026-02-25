@@ -16,7 +16,7 @@ export async function server(): Promise<void> {
 
   //* Create the server
   const fastify = Fastify({
-    logger: process.env.LOG_LEVEL === 'debug' ? true : false
+    logger: true
   })
 
   //? Server status check

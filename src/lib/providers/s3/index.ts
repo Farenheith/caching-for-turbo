@@ -62,20 +62,20 @@ export const getS3Provider = (
     ]) || 'https://s3.amazonaws.com'
   const s3Prefix = getInput('s3-prefix', ['S3_PREFIX']) || 'turbogha/'
 
-  if (!s3AccessKeyId || !s3SecretAccessKey || !s3Bucket || !s3Region) {
+  if (!s3Bucket || !s3Region) {
     throw new Error(
-      'S3 provider requires s3-access-key-id, s3-secret-access-key, s3-bucket, and s3-region. Set these as environment variables or GitHub Actions inputs.'
+      'S3 provider requires s3-bucket, and s3-region. Set these as environment variables or GitHub Actions inputs.'
     )
   }
 
   const s3Client = new S3Client({
     region: s3Region,
     endpoint: s3Endpoint,
-    credentials: {
+    credentials: s3AccessKeyId && s3SecretAccessKey ? {
       accessKeyId: s3AccessKeyId,
       secretAccessKey: s3SecretAccessKey,
       sessionToken: s3SessionToken
-    }
+    } : undefined
   })
 
   const getS3Key = (hash: string, tag?: string) => {
